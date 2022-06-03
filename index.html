@@ -17,17 +17,17 @@
           <input type="file" />
         </div>
         <!-- business name  -->
-        <div class="business_name">
+        <div class="">
           <label for="businessname">Enter Your Business Name</label>
           <input type="text" name="business_name" id="" />
         </div>
         <!-- customer name -->
-        <div class="customer_name">
+        <div class="">
           <label for="customerName">Enter Your Customer's Name</label>
           <input type="text" name="customer_name" />
         </div>
         <!-- invoice number -->
-        <div class="invoice_number">
+        <div class="">
           <label for="invoice_number">Enter Invoice Number</label>
           <input type="text" name="invoice_number" />
         </div>
@@ -36,7 +36,51 @@
           <label for="date_created">Select Date</label>
           <input type="text" name="date_created" />
         </div>
+        <!-- Payment Due Date -->
+        <div class="date">
+          <label for="due_date">Select Date</label>
+          <input type="text" name="due_date" />
+        </div>
       </div>
+      <!-- forms of payment  -->
+      <div class="">
+        <label for="payment_method">Payment Method</label>
+        <select name="payment_method" id="">
+          <option value="">Bank Transfer</option>
+          <option value="">Mobile Deposit</option>
+          <option value="">Check</option>
+        </select>
+      </div>
+      <!-- items -->
+      <div class="items">
+        <div>
+          <label for="description">Description</label>
+          <textarea name="description" cols="20" rows="2"></textarea>
+        </div>
+        <div>
+          <label for="Unit">Unit/Quantiy</label>
+          <input name="Unit" />
+        </div>
+        <div>
+          <label for="price">Price</label>
+          <input type="text" name="price" />
+        </div>
+      </div>
+      <div class="supplementary_items">
+        <div>
+          <label for="Shipping">Shipping</label>
+          <input name="Shipping" />
+        </div>
+        <div>
+          <label for="cat">VAT</label>
+          <input name="vat" />
+        </div>
+        <div>
+          <label for="discount">Discount</label>
+          <input type="text" name="discount" />
+        </div>
+      </div>
+
       <div class="receipt">
         <h3>receipt goes here</h3>
       </div>
