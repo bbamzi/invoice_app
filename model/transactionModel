@@ -1,0 +1,28 @@
+const mongoose = require('mongoose');
+
+const transactionSchema = new mongoose.Schema({
+  timeStamp: { type: Date, default: Date.now },
+  serviceType: { type: String, required: [true, 'Service Type is Required'] },
+  id_number: {
+    type: String,
+    unique: true,
+    required: [true, 'Id Reference is Required'],
+  },
+  serviceBusinessName: { type: String },
+  recipientName: {
+    type: String,
+    required: [true, "Recepient's name  is Required"],
+  },
+  recipientAddress: { type: String },
+  transactionDate: { type: Date },
+  dueDate: { type: Date },
+  paymentMethod: { type: String },
+  shippingFee: { type: Number },
+  vat: { type: Number },
+  discount: { type: Number },
+  total: { type: Number },
+  clientSignature: { type: String },
+});
+const Transaction = mongoose.model('Transaction', transactionSchema);
+
+module.exports = Transaction;
