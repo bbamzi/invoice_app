@@ -2,7 +2,13 @@ const Transaction = require('./../model/transactionModel');
 
 exports.getAllTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.find();
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+    const query = Transaction.find(queryObj);
+    const transactions = await query;
+
+    // console.log(req.query);
     res.status(200).json({
       status: 'success',
       results: transactions.length,
@@ -13,7 +19,6 @@ exports.getAllTransactions = async (req, res) => {
   } catch {
     res.status(404).json({
       status: 'fail',
-      message: 'blah',
     });
   }
 };
@@ -42,13 +47,13 @@ exports.addTransaction = async (req, res) => {
     res.status(201).json({
       status: 'Success',
       data: {
-        transaction: newTransaction,
+        newTransaction,
       },
     });
   } catch (err) {
     res.status(400).json({
-      status: 'fail',
-      message: 'err',
+      Status: 'fail',
+      message: err,
     });
   }
 };
@@ -76,9 +81,17 @@ exports.updateTransaction = async (req, res) => {
   }
 };
 //  to delete a transaction
-exports.deleteTransaction = (req, res) => {
-  res.status(204).json({
-    status: 'Success',
-    data: null,
-  });
+exports.deleteTransaction = async (req, res) => {
+  try {
+    await Transaction.findByIdAndDelete(req.params.id);
+    res.status(204).json({
+      status: 'Success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      Status: 'fail',
+      message: err,
+    });
+  }
 };
