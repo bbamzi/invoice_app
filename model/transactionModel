@@ -5,7 +5,7 @@ const transactionSchema = new mongoose.Schema({
   serviceType: { type: String, required: [true, 'Service Type is Required'] },
   id_number: {
     type: String,
-    unique: true,
+    unique: [true, 'id already exists'],
     required: [true, 'Id Reference is Required'],
   },
   serviceBusinessName: { type: String },

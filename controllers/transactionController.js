@@ -1,28 +1,38 @@
 const Transaction = require('./../model/transactionModel');
 
-exports.getAllTransactions = (req, res) => {
-  // res.status(200).json({
-  //   status: 'success',
-  //   results: transactions.length,
-  //   data: {
-  //     transactions,
-  //   },
-  // });
+exports.getAllTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaction.find();
+    res.status(200).json({
+      status: 'success',
+      results: transactions.length,
+      data: {
+        transactions,
+      },
+    });
+  } catch {
+    res.status(404).json({
+      status: 'fail',
+      message: 'blah',
+    });
+  }
 };
 // To get single transacton from Database
-exports.getTransaction = (req, res) => {
-  const id = Number(req.params.id);
-  // const transaction = transactions.find((el) => el.id === id);
-  // if (!transaction) {
-  //   return res.status(404).json({
-  //     Status: 'Fail',
-  //     Message: 'Invalid Id',
-  //   });
-  // }
-  // res.status(200).json({
-  //   Status: 'success',
-  //   transaction,
-  // });
+exports.getTransaction = async (req, res) => {
+  try {
+    const transaction = await Transaction.findById(req.params.id);
+    res.status(200).json({
+      Status: 'success',
+      data: {
+        transaction,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      Status: 'fail',
+      message: err,
+    });
+  }
 };
 
 // to add transaction to databsda
@@ -38,7 +48,7 @@ exports.addTransaction = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: err,
+      message: 'err',
     });
   }
 };
