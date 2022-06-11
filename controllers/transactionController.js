@@ -53,11 +53,27 @@ exports.addTransaction = async (req, res) => {
   }
 };
 // To Update a Specific Transaction
-exports.updateTransaction = (req, res) => {
-  res.status(200).json({
-    status: 'Success',
-    message: 'Updated Successfully ',
-  });
+exports.updateTransaction = async (req, res) => {
+  try {
+    const transaction = await Transaction.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(200).json({
+      status: 'Success',
+      message: 'Updated Successfully ',
+      data: { transaction },
+    });
+  } catch (err) {
+    res.status(400).json({
+      Status: 'fail',
+      message: err,
+    });
+  }
 };
 //  to delete a transaction
 exports.deleteTransaction = (req, res) => {
