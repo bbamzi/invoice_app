@@ -25,4 +25,5 @@ app.all('*', (req, res, next) => {
   });
 });
 
+const test = 'hi';
 module.exports = app;
