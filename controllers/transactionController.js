@@ -1,5 +1,6 @@
 const Transaction = require('./../model/transactionModel');
 const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
 
 exports.getAllTransactions = catchAsync(async (req, res, next) => {
   const queryObj = { ...req.query };
@@ -18,6 +19,9 @@ exports.getAllTransactions = catchAsync(async (req, res, next) => {
 // To get single transacton from Database
 exports.getTransaction = catchAsync(async (req, res, next) => {
   const transaction = await Transaction.findById(req.params.id);
+  if (!transaction) {
+    return next(new AppError(`No Transaction with that ID found`, 404));
+  }
   res.status(200).json({
     Status: 'success',
     data: {
@@ -46,6 +50,9 @@ exports.updateTransaction = catchAsync(async (req, res, next) => {
       runValidators: true,
     }
   );
+  if (!transaction) {
+    return next(new AppError(`No Transaction with that ID found`, 404));
+  }
   res.status(200).json({
     status: 'Success',
     message: 'Updated Successfully ',
@@ -54,7 +61,10 @@ exports.updateTransaction = catchAsync(async (req, res, next) => {
 });
 //  to delete a transaction
 exports.deleteTransaction = catchAsync(async (req, res, next) => {
-  await Transaction.findByIdAndDelete(req.params.id);
+  const transaction = await Transaction.findByIdAndDelete(req.params.id);
+  if (!transaction) {
+    return next(new AppError(`No Transaction with that ID found`, 404));
+  }
   res.status(204).json({
     status: 'Success',
     data: null,
