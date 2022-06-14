@@ -11,13 +11,23 @@ const signToken = (id) => {
 };
 exports.signup = catchAsync(async (req, res, next) => {
   // const newUser = await User.create(req.body);
-  const newUser = await User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
-  });
+  const newUser = await User.create(
+    // firstName: req.body.firstName,
+    // lastName: req.body.lastName,
+    // email: req.body.email,
+    // password: req.body.password,
+    // passwordConfirm: req.body.passwordConfirm,
+    ({
+      firstName,
+      lastName,
+      email,
+      password,
+      passwordConfirm,
+      region,
+      clientSignature,
+      passwordChangedAt,
+    } = req.body)
+  );
   console.log(req.body);
   const token = signToken(newUser._id);
   res.status(201).json({
@@ -69,12 +79,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
   // check if user still exist
-  const freshUser = await User.findById(decoded.id);
-  if (!freshUser) {
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) {
     return next(new AppError('The user does not exist', 401));
   }
 
   // check if user changed password after jwt was issued
-  
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User Recently changed password! please log in again.', 401)
+    );
+  }
+  req.user = currentUser;
   next();
 });
