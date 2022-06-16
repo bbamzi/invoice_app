@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   timeStamp: { type: Date, default: Date.now },
   serviceType: { type: String, required: [true, 'Service Type is Required'] },
   id_number: {

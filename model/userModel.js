@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin', 'pro-user'],
     default: 'user',
   },
+  transactions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Transaction',
+    },
+  ],
   password: {
     type: String,
     required: [true, 'Please provide a password'],

@@ -51,6 +51,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       clientSignature,
       passwordChangedAt,
       role,
+      transactions,
     } = req.body)
   );
   createSendToken(newUser, 201, res);

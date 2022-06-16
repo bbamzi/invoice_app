@@ -26,4 +26,6 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
+router.route('/:id/transactions').post(userController.getAllUserTransactions);
+
 module.exports = router;
