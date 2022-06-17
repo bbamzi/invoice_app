@@ -26,7 +26,7 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
-router.route('/:id/transactions').get(userController.getAllUserTransactions);
+router.route('/:id/transactions').post(userController.getAllUserTransactions);
 // app.get('/users/:id/transactions').get(userController.getAllUserTransactions);
 
 module.exports = router;

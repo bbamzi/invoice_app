@@ -2,6 +2,7 @@ const User = require('./../model/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const { populate } = require('./../model/userModel');
+const factory = require('./handlerFactory');
 // require('../model/transactionModel');
 // require('../model/userModel');
 const filterObj = (obj, ...allowedFields) => {
@@ -51,7 +52,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
 });
 exports.getAllUserTransactions = catchAsync(async (req, res, next) => {
   const user = await User.find({ id: req.params.id }).populate('transactions');
-  console.log(User.find({ id: req.params.id }).populate().path);
 
   // const user = await User.find({ : req.params._id });
 
@@ -72,12 +72,8 @@ exports.updateUser = (req, res) => {
   });
 };
 //  to delete a transaction
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'route not defined',
-  });
-};
+exports.deleteUser = factory.deleteOne(User);
+// exports.deleteTransaction = factory.deleteOne(Transaction);
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   // Create Error if user post password dat

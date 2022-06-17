@@ -1,3 +1,4 @@
+const factory = require('./handlerFactory');
 const Transaction = require('./../model/transactionModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
@@ -60,13 +61,14 @@ exports.updateTransaction = catchAsync(async (req, res, next) => {
   });
 });
 //  to delete a transaction
-exports.deleteTransaction = catchAsync(async (req, res, next) => {
-  const transaction = await Transaction.findByIdAndDelete(req.params.id);
-  if (!transaction) {
-    return next(new AppError(`No Transaction with that ID found`, 404));
-  }
-  res.status(204).json({
-    status: 'Success',
-    data: null,
-  });
-});
+exports.deleteTransaction = factory.deleteOne(Transaction);
+// exports.deleteTransaction = catchAsync(async (req, res, next) => {
+//   const transaction = await Transaction.findByIdAndDelete(req.params.id);
+//   if (!transaction) {
+//     return next(new AppError(`No Transaction with that ID found`, 404));
+//   }
+//   res.status(204).json({
+//     status: 'Success',
+//     data: null,
+//   });
+// });
