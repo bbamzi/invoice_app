@@ -1,6 +1,7 @@
 const User = require('./../model/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const { populate } = require('./../model/userModel');
 // require('../model/transactionModel');
 // require('../model/userModel');
 const filterObj = (obj, ...allowedFields) => {
@@ -16,6 +17,7 @@ const filterObj = (obj, ...allowedFields) => {
 // })
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
+
   res.status(200).json({
     status: 'success',
     results: users.length,
@@ -48,10 +50,11 @@ exports.createUser = catchAsync(async (req, res, next) => {
   });
 });
 exports.getAllUserTransactions = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id).populate('transactions');
+  const user = await User.find({ id: req.params.id }).populate('transactions');
+  console.log(User.find({ id: req.params.id }).populate().path);
+
   // const user = await User.find({ : req.params._id });
 
-  console.log(user);
   res.status(201).json({
     status: 'Success',
     data: {
@@ -87,7 +90,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
   // Update user document
-  const filteredBody = filterObj(req.body, 'firstName', 'email', 'lastName');
+  const filteredBody = filterObj(
+    req.body,
+    'firstName',
+    'email',
+    'lastName',
+    'transactions'
+  );
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,

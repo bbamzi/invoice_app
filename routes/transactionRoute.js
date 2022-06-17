@@ -19,6 +19,6 @@ router
     transactionController.deleteTransaction
   );
 
-router.route('/:id/add').get(transactionController.addTransaction);
+// router.get('/:id/add').get(transactionController.addTransaction);
 
 module.exports = router;
