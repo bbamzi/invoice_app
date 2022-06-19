@@ -42,24 +42,7 @@ exports.addTransaction = catchAsync(async (req, res, next) => {
   });
 });
 // To Update a Specific Transaction
-exports.updateTransaction = catchAsync(async (req, res, next) => {
-  const transaction = await Transaction.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
-  if (!transaction) {
-    return next(new AppError(`No Transaction with that ID found`, 404));
-  }
-  res.status(200).json({
-    status: 'Success',
-    message: 'Updated Successfully ',
-    data: { transaction },
-  });
-});
+exports.updateTransaction = factory.updateOne(Transaction);
 //  to delete a transaction
 exports.deleteTransaction = factory.deleteOne(Transaction);
 // exports.deleteTransaction = catchAsync(async (req, res, next) => {

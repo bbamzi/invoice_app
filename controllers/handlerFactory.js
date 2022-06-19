@@ -11,3 +11,41 @@ exports.deleteOne = (Model) =>
       data: null,
     });
   });
+
+exports.updateOne = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!doc) {
+      return next(new AppError(`No Document with that ID found`, 404));
+    }
+    res.status(200).json({
+      status: 'Success',
+      message: 'Updated Successfully ',
+      data: { data: doc },
+    });
+  });
+
+exports.createOne = (Model) => {
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        data: doc,
+      },
+    });
+  });
+};
+// catchAsync(async (req, res, next) => {
+//   const newTransaction = await Transaction.create(req.body);
+//   res.status(201).json({
+//     status: 'Success',
+//     data: {
+//       newTransaction,
+//     },
+//   });
+// });

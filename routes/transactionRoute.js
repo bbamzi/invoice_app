@@ -8,7 +8,7 @@ const router = express.Router();
 router
   .route('/')
   .get(authController.protect, transactionController.getAllTransactions)
-  .post(transactionController.addTransaction);
+  .post(authController.protect, transactionController.addTransaction);
 router
   .route('/:id')
   .get(transactionController.getTransaction)

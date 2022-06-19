@@ -29,7 +29,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 });
 // To get single user from Database
 exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).populate('transaction');
   if (!user) {
     return next(new AppError(`No User with that ID found`, 404));
   }
@@ -51,7 +51,9 @@ exports.createUser = catchAsync(async (req, res, next) => {
   });
 });
 exports.getAllUserTransactions = catchAsync(async (req, res, next) => {
-  const user = await User.find({ id: req.params.id }).populate('transactions');
+  const user = await User.find({ id: req.params.id }).populate({
+    path: 'transactions',
+  });
 
   // const user = await User.find({ : req.params._id });
 
@@ -65,12 +67,7 @@ exports.getAllUserTransactions = catchAsync(async (req, res, next) => {
 // 62ab181cbc7062bb9c427100
 
 // To Update a Specific Transaction
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'route not defined',
-  });
-};
+exports.updateUser = factory.updateOne(User);
 //  to delete a transaction
 exports.deleteUser = factory.deleteOne(User);
 // exports.deleteTransaction = factory.deleteOne(Transaction);

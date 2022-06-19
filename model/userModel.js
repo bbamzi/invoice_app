@@ -25,8 +25,15 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin', 'pro-user'],
+    enum: ['user', 'administrator', 'pro-user'],
     default: 'user',
+  },
+
+  password: {
+    type: String,
+    required: [true, 'Please provide a password'],
+    minlength: 5,
+    select: false,
   },
   transactions: [
     {
@@ -34,12 +41,6 @@ const userSchema = new mongoose.Schema({
       ref: 'Transaction',
     },
   ],
-  password: {
-    type: String,
-    required: [true, 'Please provide a password'],
-    minlength: 5,
-    select: false,
-  },
 
   passwordConfirm: {
     type: String,
@@ -79,7 +80,11 @@ userSchema.methods.correctPassword = async function (
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };
-
+userSchema.virtual('transaction', {
+  ref: 'Transaction',
+  foreignField: 'user',
+  localField: '_id',
+});
 userSchema.pre('save', function (next) {
   if (!this.isModified('password') || this.isNew) return next();
   this.passwordChangedAt = Date.now() - 1000;

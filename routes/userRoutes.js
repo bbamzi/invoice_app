@@ -16,6 +16,7 @@ router.patch(
   authController.updatePassword
 );
 router.patch('/updateMe', authController.protect, userController.updateMe);
+// router.delete('/deleteMe', authController.protect, userController.deleteMe);
 router
   .route('/')
   .get(userController.getAllUsers)
@@ -26,7 +27,7 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
-router.route('/:id/transactions').post(userController.getAllUserTransactions);
+router.route('/:id/transactions').get(userController.getAllUserTransactions);
 // app.get('/users/:id/transactions').get(userController.getAllUserTransactions);
 
 module.exports = router;
