@@ -1,5 +1,5 @@
 // ###########################################################     Modules      #######################################
-
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -13,8 +13,12 @@ const xss = require('xss-clean');
 // #######################################################      MiddleWares      ##################################################
 
 const app = express();
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 // set security http
-app.use(helmet());
+// app.use(helmet());
 
 //  development logging
 if (process.env.NODE_ENV === 'development') {
@@ -37,7 +41,16 @@ app.use(mongoSanitize());
 // data sanitization agains xxs aTTACK
 app.use(xss());
 // serving stativ files
-app.use(express.static(`${__dirname}/public`));
+
+// base
+app.get('/base', (req, res) => {
+  res.status(200).render('base');
+});
+
+// index
+app.get('/', (req, res) => {
+  res.status(200).render('index');
+});
 
 app.use('/api/v1/transactions', transactionRouter);
 app.use('/api/v1/users', userRouter);

@@ -12,7 +12,10 @@ const filterObj = (obj, ...allowedFields) => {
   });
   return newObj;
 };
-
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 // exports.getTransaction = catchAsync(async (req,res,next)=> {
 //   const
 // })
@@ -28,18 +31,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 // To get single user from Database
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id).populate('transaction');
-  if (!user) {
-    return next(new AppError(`No User with that ID found`, 404));
-  }
-  res.status(200).json({
-    Status: 'success',
-    data: {
-      user,
-    },
-  });
-});
+exports.getUser = factory.getOne(User, { path: 'transactions' });
 // to addd transaction to databsda
 exports.createUser = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);

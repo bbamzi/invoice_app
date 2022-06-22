@@ -40,12 +40,19 @@ exports.createOne = (Model) => {
     });
   });
 };
-// catchAsync(async (req, res, next) => {
-//   const newTransaction = await Transaction.create(req.body);
-//   res.status(201).json({
-//     status: 'Success',
-//     data: {
-//       newTransaction,
-//     },
-//   });
-// });
+
+exports.getOne = (Model, popOption) =>
+  catchAsync(async (req, res, next) => {
+    let query = Model.findById(req.params.id);
+    if (popOption) query.populate(popOption);
+    const doc = await query;
+    if (!doc) {
+      return next(new AppError(`No Document with that ID found`, 404));
+    }
+    res.status(200).json({
+      Status: 'success',
+      data: {
+        doc,
+      },
+    });
+  });

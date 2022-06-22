@@ -5,12 +5,13 @@ html(lang='en')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     title Document
   // https://github.com/szimek/signature_pad
+   
   body
     h1 invoice app
     div
       input.receipt(type='button' value='Receipt')
       input.invoice(type='button' value='Invoice')
-    form(action=)
+    form(action=post)
       // ############################### Receipt ##################################
       div(class='receipt_page' style='display: block')
         h3 receipt goes here
@@ -18,30 +19,30 @@ html(lang='en')
           label logo goes here
           input(type='file')
         // business name
-        div(class=)
+        div(class=receipt_business_name)
           label Business Name
           input(type='text' name='receipt_business_name')
         // Recipient name
-        div(class=)
+        div(class=receipient_business_name)
           label Recipient&apos;s Name
-          input(type='text' name='receipt_business_name')
-        div(class=)
+          input(type='text' name='receipient_business_name')
+        div(class=receipt_recipient_address)
           label Recipient&apos;s Address
           input(type='text' name='receipt_recipient_address')
         // Receipt number
-        div(class=)
+        div(class=receipt_number)
           label Receipt Number
           input(type='text' name='receipt_number')
         // Date Created
         .date
           label Select Date
           input(type='text' name='receipt_date_created')
-        div(class=)
+        div(class=receipt_payment_method)
           label Payment Method
           select(name='receipt_payment_method')
-            option(value=) Bank Transfer
-            option(value=) Mobile Deposit
-            option(value=) other
+            option() Bank Transfer
+            option() Mobile Deposit
+            option() other
           label If Other
           input(type='text')
         // items
@@ -55,7 +56,8 @@ html(lang='en')
           div
             label Price
             input(type='text' name='price')
-          input(type='button' value='add item' id='add_receipt_items')
+            br
+        input(type='button' value='add item' id='add_receipt_items')
         div(class='supplementary_items')
           div
             label Shipping 📦
@@ -73,8 +75,8 @@ html(lang='en')
           div
             label Total
             input(type='text' name='total')
-        div
-          input(type='button' name='receipt_add_signature' id= value='Add Signature')
+        //- div
+        //-   input(type='button' name='receipt_add_signature' id= value='Add Signature')
       // ############################### Invoice ##################################
       div(class='invoice_page' style='display: none')
         h3 invoice goes here
@@ -83,15 +85,15 @@ html(lang='en')
           label logo goes here
           input(type='file')
         // business name
-        div(class=)
+        div(class=business_name)
           label Business Name
           input(type='text' name='business_name')
         // Recipient name
-        div(class=)
+        div(class=Recipient_name)
           label Recipient&apos;s Name
           input(type='text' name='Recipient_name')
         // invoice number
-        div(class=)
+        div(class=invoice_number)
           label Invoice Number
           input(type='text' name='invoice_number')
         // Date Created
@@ -103,12 +105,12 @@ html(lang='en')
           label Due Date
           input(type='text' name='due_date')
         // forms of payment
-        div(class=)
+        div(class=payment_method)
           label Payment Method
           select(name='payment_method')
-            option(value=) Bank Transfer
-            option(value=) Mobile Deposit
-            option(value=) Other
+            option() Bank Transfer
+            option() Mobile Deposit
+            option() Other
           label If Other:
           input(type='text' name='invoice_if_other')
         // items
@@ -141,9 +143,12 @@ html(lang='en')
           div
             label Total
             input(type='text' name='total')
-        div
-          input(type='button' name='invoice_add_signature' id= value='Add Signature')
-        div
-          input(type='submit' value='Preview')
-  script(src='script.js')
+
+      br
+      div
+        input(type='button' name='invoice_add_signature'  value='Add Signature')
+      div
+        input(type='submit' value='Preview')
+    script
+      include script.js
 
