@@ -10,6 +10,7 @@ const transactionRouter = require('./routes/transactionRoute');
 const userRouter = require('./routes/userRoutes');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const viewRouter = require('./routes/viewRoutes');
 // #######################################################      MiddleWares      ##################################################
 
 const app = express();
@@ -42,16 +43,7 @@ app.use(mongoSanitize());
 app.use(xss());
 // serving stativ files
 
-// base
-app.get('/base', (req, res) => {
-  res.status(200).render('base');
-});
-
-// index
-app.get('/', (req, res) => {
-  res.status(200).render('index');
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/transactions', transactionRouter);
 app.use('/api/v1/users', userRouter);
 
