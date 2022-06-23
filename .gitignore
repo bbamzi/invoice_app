@@ -1,1 +1,6 @@
 /node_modules/
+.prettierrc
+.eslintrc.json
+config.env
+public/.DS_Store
+

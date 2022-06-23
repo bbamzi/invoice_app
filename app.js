@@ -10,6 +10,8 @@ const transactionRouter = require('./routes/transactionRoute');
 const userRouter = require('./routes/userRoutes');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const cookieParser = require('cookie-parser');
+const viewRouter = require('./routes/viewRoutes');
 // #######################################################      MiddleWares      ##################################################
 
 const app = express();
@@ -18,7 +20,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 // set security http
-// app.use(helmet());
+app.use(helmet());
 
 //  development logging
 if (process.env.NODE_ENV === 'development') {
@@ -35,6 +37,11 @@ app.use('/api', limiter);
 
 // reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+// app.use(cookieParser);
+
+// app.use((req, res, next) => {
+//   console.log(req.cookies);
+// });
 
 // data sanitization against nosql query injection
 app.use(mongoSanitize());
@@ -42,23 +49,12 @@ app.use(mongoSanitize());
 app.use(xss());
 // serving stativ files
 
-// base
-app.get('/base', (req, res) => {
-  res.status(200).render('base');
-});
-
-// index
-app.get('/', (req, res) => {
-  res.status(200).render('index');
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/transactions', transactionRouter);
 app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {
-  next(
-    new AppError(`Can't find ${req.originalUrl.slice(1)} on this server`, 404)
-  );
+  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
 app.use(globalErrorHandler);
