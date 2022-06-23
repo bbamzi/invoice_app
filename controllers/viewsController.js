@@ -1,7 +1,10 @@
 const User = require('../model/userModel');
 const catchAsync = require('../utils/catchAsync');
 exports.base = (req, res) => {
-  res.status(200).render('base');
+  res.status(200).render('base', {
+    test: 'This is a placeholder',
+    title: 'Base',
+  });
 };
 
 exports.createNewTransaction = (req, res) => {
